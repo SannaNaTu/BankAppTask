@@ -12,6 +12,13 @@ namespace BankAppTask.Model
             Account = new HashSet<Account>();
         }
 
+        public Customer(string firstname, string lastname, long bankId)
+        {
+            Firstname = firstname;
+            Lastname = lastname;
+            BankId = bankId;
+        }
+
         public long Id { get; set; }
         [Required]
         [StringLength(50)]

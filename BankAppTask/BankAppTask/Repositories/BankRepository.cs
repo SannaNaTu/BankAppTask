@@ -11,7 +11,7 @@ namespace BankAppTask.Repositories
     {
         private static BankdbContext _context = new BankdbContext();
 
-        public static void Create(Bank bank)
+        public static void Create(Bank bank) //Lisää
         {
             _context.Bank.Add(bank);
             _context.SaveChanges();
@@ -26,17 +26,24 @@ namespace BankAppTask.Repositories
             var bank = _context.Bank.FirstOrDefault(b => b.Id == id);
             return bank;
         }
-        public static void Update(int id, Bank bank)
+        public static void Update(int id, Bank bank) // Update
         { 
             var updateBank = GetBankById(id);
             if (updateBank != null)
         
             {
-                _context.Bank.Update(updateBank);
+                _context.Bank.Update(bank);
 
             }
-            _context.SaveChanges();
+            _context.SaveChanges(); //execute
 
+        }
+        public static void Delete(int id)  //poistaminen
+        {
+            var delBank = _context.Bank.FirstOrDefault(b => b.Id == id);
+            if (delBank != null) 
+            _context.Bank.Remove(delBank); 
+            _context.SaveChanges();
         }
         
     }

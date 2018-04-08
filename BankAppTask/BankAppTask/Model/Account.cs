@@ -12,6 +12,24 @@ namespace BankAppTask.Model
             Transaction = new HashSet<Transaction>();
         }
 
+        public Account(string iban, long customerId)
+        {
+            Iban = iban;
+            CustomerId = customerId;
+        }
+
+        public Account(string iban, string name, long bankId, long customerId, decimal balance, Bank bank, Customer customer, ICollection<Transaction> transaction)
+        {
+            Iban = iban;
+            Name = name;
+            BankId = bankId;
+            CustomerId = customerId;
+            Balance = balance;
+            Bank = bank;
+            Customer = customer;
+            Transaction = transaction;
+        }
+
         [Key]
         [Column("IBAN", TypeName = "nchar(25)")]
         public string Iban { get; set; }
