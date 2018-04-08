@@ -12,6 +12,11 @@ namespace BankAppTask.Model
             Transaction = new HashSet<Transaction>();
         }
 
+        public Account(string iban)
+        {
+            Iban = iban;
+        }
+
         public Account(string iban, long customerId)
         {
             Iban = iban;
