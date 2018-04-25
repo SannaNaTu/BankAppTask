@@ -9,28 +9,56 @@ namespace BankAppTask.Repositories
 {
     class AccountRepository
     {
-        private static BankdbContext _context = new BankdbContext();
+      
+        private readonly BankdbContext _context = new BankdbContext();
 
-        public static Account GetAccountByCustomerId(int CustomerId)
+        //Print Accounts
+        public List<Account> Read()
         {
-            var account = _context.Account.FirstOrDefault(i => i.CustomerId == CustomerId);
+            List<Account> accounts = _context.Account.ToListAsync().Result;
+            return accounts;
+        }
+
+        //Find account by id
+        public Account GetAccountById(string iban)
+        {
+            var account = _context.Account.FirstOrDefault(a => a.Iban == iban);
             return account;
         }
-        public static void Update(int IBAN, Account account) // Update
-        {
-            var updateAccount = GetAccountByCustomerId(IBAN);
-            if (updateAccount != null)
 
-            {
-                _context.Account.Update(account);
-
-            }
-            _context.SaveChanges(); //execute
-        }
-        public static void Create(Account account) //Lisää
+        //Create new Account
+        public void CreateAccount(Account account)
         {
             _context.Account.Add(account);
             _context.SaveChanges();
         }
+
+        //Delete an account
+        public void DeleteAccount(string iban)
+        {
+            var delAccount = _context.Account.FirstOrDefault(a => a.Iban == iban);
+            if (delAccount != null)
+                _context.Account.Remove(delAccount);
+            _context.SaveChanges();
+        }
+
+
+        public void CreateTransaction(Transaction transaction)
+        {
+            try
+            {
+                
+                _context.Transaction.Add(transaction);
+                var account = GetAccountById(transaction.Iban);
+                account.Balance += transaction.Amount;
+                _context.Account.Update(account);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }
+

@@ -12,6 +12,12 @@ namespace BankAppTask.Model
             Account = new HashSet<Account>();
         }
 
+        public Customer(string firstname, string lastname)
+        {
+            Firstname = firstname;
+            Lastname = lastname;
+        }
+
         public Customer(string firstname, string lastname, long bankId)
         {
             Firstname = firstname;
@@ -33,5 +39,12 @@ namespace BankAppTask.Model
         public Bank Bank { get; set; }
         [InverseProperty("Customer")]
         public ICollection<Account> Account { get; set; }
+
+
+
+        public override string ToString()
+        {
+            return $"{Id}, {Firstname} {Lastname}";
+        }
     }
 }

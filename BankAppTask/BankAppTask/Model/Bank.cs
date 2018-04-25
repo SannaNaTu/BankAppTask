@@ -13,6 +13,8 @@ namespace BankAppTask.Model
             Customer = new HashSet<Customer>();
         }
 
+
+
         public Bank(string name, string bic)
         {
             Name = name;

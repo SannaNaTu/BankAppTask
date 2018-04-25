@@ -11,40 +11,50 @@ namespace BankAppTask.Repositories
     {
         private static BankdbContext _context = new BankdbContext();
 
-        public static void Create(Bank bank) //Lisää
+        //Tulosta pankit
+        public List<Bank> GetTransactionsFromBankCustomersAccounts()
         {
-            _context.Bank.Add(bank);
-            _context.SaveChanges();
-        }
-        public static List<Bank> Get()
-        {
-            List<Bank> banks = _context.Bank.ToListAsync().Result;
+            List<Bank> banks = _context.Bank
+                .Include(b => b.Customer)
+                .Include(b => b.Account)
+                .Include(b => b.Account).ThenInclude(a => a.Transaction)
+                .ToListAsync().Result;
             return banks;
         }
-        public static Bank GetBankById(int id)
+  
+        public Bank GetBankById(long id) //Eti pankki
         {
             var bank = _context.Bank.FirstOrDefault(b => b.Id == id);
             return bank;
         }
-        public static void Update(int id, Bank bank) // Update
+
+        public  void Create(Bank bank) //Lisää
+        {
+            _context.Bank.Add(bank);
+            _context.SaveChanges();
+        }
+       
+        public void Update(Bank bank) // Update
         { 
-            var updateBank = GetBankById(id);
+            var updateBank = GetBankById(bank.Id);
             if (updateBank != null)
         
             {
+                updateBank.Name = bank.Name;
+                updateBank.Bic = bank.Bic;
                 _context.Bank.Update(bank);
 
             }
             _context.SaveChanges(); //execute
 
         }
-        public static void Delete(int id)  //poistaminen
+        public void Delete(int id)  //poistaminen
         {
             var delBank = _context.Bank.FirstOrDefault(b => b.Id == id);
             if (delBank != null) 
             _context.Bank.Remove(delBank); 
             _context.SaveChanges();
         }
-        
+ 
     }
 }

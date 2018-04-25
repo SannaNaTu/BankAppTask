@@ -23,6 +23,11 @@ namespace BankAppTask.Model
             CustomerId = customerId;
         }
 
+        public Account(string iban, decimal balance) : this(iban)
+        {
+            Balance = balance;
+        }
+
         public Account(string iban, string name, long bankId, long customerId, decimal balance, Bank bank, Customer customer, ICollection<Transaction> transaction)
         {
             Iban = iban;
