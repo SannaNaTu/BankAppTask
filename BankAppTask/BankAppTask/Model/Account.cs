@@ -28,16 +28,18 @@ namespace BankAppTask.Model
             Balance = balance;
         }
 
-        public Account(string iban, string name, long bankId, long customerId, decimal balance, Bank bank, Customer customer, ICollection<Transaction> transaction)
+        public Account(string iban, long bankId, long customerId, decimal balance) : this(iban, bankId)
         {
-            Iban = iban;
+            CustomerId = customerId;
+            Balance = balance;
+        }
+
+        public Account(string iban, string name, long bankId, long customerId, decimal balance) : this(iban)
+        {
             Name = name;
             BankId = bankId;
             CustomerId = customerId;
             Balance = balance;
-            Bank = bank;
-            Customer = customer;
-            Transaction = transaction;
         }
 
         [Key]
@@ -58,5 +60,11 @@ namespace BankAppTask.Model
         public Customer Customer { get; set; }
         [InverseProperty("IbanNavigation")]
         public ICollection<Transaction> Transaction { get; set; }
+
+        public override string ToString()
+        {
+            string plusMinus = Balance >= 0 ? "+" : "";
+            return $"{Iban} - {Name} - {plusMinus}{Balance}";
+        }
     }
 }

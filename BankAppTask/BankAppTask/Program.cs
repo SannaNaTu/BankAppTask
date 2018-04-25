@@ -4,6 +4,7 @@ using BankAppTask.Repositories;
 
 
 
+
 namespace BankAppTask
 {
     class Program
@@ -16,93 +17,111 @@ namespace BankAppTask
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             Console.WriteLine("Bank app ");
+
+            //CreateBank("PANKKI8", "PANK8FIHH");
+
+            //UpdateBank("PANKKI8", "UPDATE8FIHH");
+
+            //DeleteBank(8);
+
+            //CreateCustomer("Allu", "Ankka",2);
+
+            //UpdateCustomer("Jallu", "Ankka", 2);
+
+            //DeleteCustomer(1);
+
+            //CreateAccount("FI8554280820034350",2,5,600);
+
+            //DeleteAccount("FI8554280820034350",2,5,600);
+
+            //CreateTransaction();
+
+            //PrintAllBanks();
+
             Console.WriteLine("press Enter to exit");
             Console.ReadLine();
         }
 
-        //Luodaan pankki
-        static void CreateBank()
+        //Luodaan pankki // TOIMII Testattu
+        static void CreateBank(string name, string bic)
         {
             BankRepository bankRepository = new BankRepository();
-            Bank bank = new Bank("PANKKI7", "PANK7FIHH");
+            Bank bank = new Bank(name,bic);
             bankRepository.Create(bank);
         }
-        static void updateBank()
+        static void UpdateBank(string name, string bic)
         { 
-            //Update pankki
-                BankRepository bankRepository = new BankRepository();
-                Bank updateBank = bankRepository.GetBankById(2);
-                updateBank.Name = "KAKKOSPANKKI2";
-                updateBank.Bic = "PANKKAKKOSFIHH";
-                bankRepository.Update(updateBank);
-        }
-        static void DeleteBank()
-        {
-            //Delete pankki
+            //Update pankki //TOIMII Testattu
             BankRepository bankRepository = new BankRepository();
-            bankRepository.Delete(5);
+            Bank bank = new Bank(name, bic);
+            bankRepository.UpdateBank(bank);
         }
-        static void CreateCustomer()
+        static void DeleteBank(long id)
         {
-            //lissee asiakas
+            //Delete pankki //TOIMII Testattu
+            Bank bank = new Bank(id);
+            BankRepository bankRepository = new BankRepository();
+            bankRepository.Delete(id);
+        }
+        static void CreateCustomer(string Firstname, string Lastname,long bankid)
+        {
+            //lissee asiakas //TOIMII Testattu
             CustomerRepository customerRepository = new CustomerRepository();
-            Customer customer = new Customer("Allu", "Ankka");
-          
+            Customer customer = new Customer(Firstname,Lastname,bankid);
             customerRepository.CreateCustomer(customer);
         }
-        static void UpdateCustomer()
+        static void UpdateCustomer(string firstname, string lastname, long bankId)
         {
-            //päivitä asaikas
+            //päivitä asaikas //TOIMII Testattu
+
             CustomerRepository customerRepository = new CustomerRepository();
-            Customer updateCustomer = customerRepository.GetCustomerById(2);
-            updateCustomer.Firstname = "Taavi";
-            updateCustomer.Lastname = "Ankka";
-            customerRepository.UpdateCustomer(updateCustomer, 3);
+            Customer customer = new Customer(firstname, lastname, bankId);
+            customerRepository.UpdateCustomer(customer);
+
         }
-        static void DeleteCustomer()
+        static void DeleteCustomer(long id)
         {
-            //deletoi asiakas
+            //deletoi asiakas // TOIMII Testattu
             CustomerRepository customerRepository = new CustomerRepository();
-            customerRepository.DeleteCustomer(5);
+            Customer customer = new Customer(id);
+            customerRepository.DeleteCustomer(id);
         }
+        static void CreateAccount(string iban, long bankId, long customerId, decimal balance)
+        {
+            //lissee tili
+            Account account = new Account(iban, bankId, customerId, balance);
+            AccountRepository accountRepository = new AccountRepository();
+            accountRepository.CreateAccount(account);
+        }
+        static void DeleteAccount(string iban, long bankId, long customerId, decimal balance)
+        {
+            //deletoi tili
+            Account account = new Account(iban, bankId, customerId, balance);
+            AccountRepository accountRepository = new AccountRepository();
+            accountRepository.DeleteAccount(account);
+        }
+
         static void CreateTransaction()
         {
-            //tilitapahtuma
+            //tilitapahtuma // TOIMII Testattu
             AccountRepository accountRepository = new AccountRepository();
 
-            TransactionRepository transactionRepository = new TransactionRepository();
+            
+            var account = accountRepository.GetAccountByIban("FI8554280820034349");
             Transaction transaction = new Transaction
             {
-                Iban = "FI85 5428 0820 0343 48",
-                Amount = -500,
+                Iban = "FI8554280820034349",
+                Amount = 500,
                 TimeStamp = DateTime.Today
 
             };
             accountRepository.CreateTransaction(transaction);
         }
-        static void PrintAllBanks() // kaikki pankit
+        static void PrintAllBanks() // hakee kaikki tehtävän hae- tiedot // TOIMII Testattu
         {
             BankView bankView = new BankView();
             bankView.PrintAllBanks();
         }
-
-        static void PrintAllAccounts(string name) //hae tilit
-        {
-            BankView bankView = new BankView();
-            bankView.PrintBankAccounts(name);
-        }
-    static void PrintBankCustomers(string name) // hae pankin asiakkaat
-        {
-            BankView bankView = new BankView();
-            bankView.PrintBankCustomers(name);
-        }
-        static void PrintCustomerInfo(string firstname, string lastname) // hae asiakkaat
-        {
-            CustomerView customerView = new CustomerView();
-            customerView.PrintCustomerInfo(firstname, lastname);
-        }
-      
-
 
     }
     

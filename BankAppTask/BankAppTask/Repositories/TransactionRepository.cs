@@ -18,12 +18,5 @@ namespace BankAppTask.Repositories
             return transactions;
         }
 
-
-    
-        public Transaction GetTransactionById(int id) //eti tarkka tieto
-        {
-            var transaction = _context.Transaction.FirstOrDefault(t => t.Id == id);
-            return transaction;
-        }
     }
 }

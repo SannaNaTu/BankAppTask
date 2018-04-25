@@ -32,37 +32,6 @@ namespace BankAppTask.Repositories
             }
 
         }
-        public void PrintBankAccounts(string name)
-        {
-            CustomerRepository customerRepository = new CustomerRepository();
-            //BankRepository bankRepository = new BankRepository();
-
-            var bank = customerRepository.GetBankAccounts(name);
-
-            foreach (var b in bank)
-            {
-                Console.WriteLine(b);
-                foreach (var bA in b.Account)
-                {
-                    Console.WriteLine(bA.ToString());
-                }
-            }
-        }
-        public void PrintBankCustomers(string name)
-        {
-            CustomerRepository customerRepository = new CustomerRepository();
-            //BankRepository bankRepository = new BankRepository();
-
-            var bank = customerRepository.GetBankCustomers(name);
-
-            foreach (var b in bank)
-            {
-                Console.WriteLine(b);
-                foreach (var bC in b.Customer)
-                {
-                    Console.WriteLine(bC);
-                }
-            }
-        }
+       
     }
 }

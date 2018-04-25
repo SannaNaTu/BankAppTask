@@ -20,21 +20,39 @@ namespace BankAppTask.Repositories
 
         public void CreateCustomer(Customer customer) //Lisää
         {
-            _context.Customer.Add(customer);
-            _context.SaveChanges();
-        }
-        public void UpdateCustomer(Customer customer, int id) //Update henkilö
-        {
-            var updateCustomer = GetCustomerById(id);
-            if (updateCustomer != null)
+            using (var context = new BankdbContext())
             {
-                updateCustomer.Firstname = customer.Firstname;
-                updateCustomer.Lastname = customer.Lastname;
-                _context.Customer.Update(customer);
+                try
+                {
+
+                    context.Add(customer);
+
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new NotImplementedException($"{ex.Message}\n{ex.InnerException.Message}");
+                }
             }
-            _context.SaveChanges();
         }
-        public void DeleteCustomer(int id) //Delete henkilö
+        public void UpdateCustomer(Customer customer) //Update henkilö
+        {
+            using (var context = new BankdbContext())
+            {
+                try
+                {
+  
+                    context.Update(customer);
+
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new NotImplementedException($"{ex.Message}\n{ex.InnerException.Message}");
+                }
+            }
+        }
+        public void DeleteCustomer(long id) //Delete henkilö
         {
             var delCustomer = _context.Customer.FirstOrDefault(c => c.Id == id);
             if (delCustomer != null)

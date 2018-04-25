@@ -13,7 +13,10 @@ namespace BankAppTask.Model
             Customer = new HashSet<Customer>();
         }
 
-
+        public Bank(long id)
+        {
+            Id = id;
+        }
 
         public Bank(string name, string bic)
         {

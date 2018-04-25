@@ -34,21 +34,25 @@ namespace BankAppTask.Repositories
             _context.SaveChanges();
         }
        
-        public void Update(Bank bank) // Update
-        { 
-            var updateBank = GetBankById(bank.Id);
-            if (updateBank != null)
-        
+        public void UpdateBank(Bank bank) // Update
+        {
+            using (var context = new BankdbContext())
             {
-                updateBank.Name = bank.Name;
-                updateBank.Bic = bank.Bic;
-                _context.Bank.Update(bank);
+                try
+                {
 
+                    context.Update(bank);
+
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new NotImplementedException($"{ex.Message}\n{ex.InnerException.Message}");
+                }
             }
-            _context.SaveChanges(); //execute
 
         }
-        public void Delete(int id)  //poistaminen
+        public void Delete(long id)  //poistaminen
         {
             var delBank = _context.Bank.FirstOrDefault(b => b.Id == id);
             if (delBank != null) 

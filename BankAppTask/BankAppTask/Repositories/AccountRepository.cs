@@ -25,38 +25,74 @@ namespace BankAppTask.Repositories
             var account = _context.Account.FirstOrDefault(a => a.Iban == iban);
             return account;
         }
+        public Account GetAccountByIban(string iban)
+        {
+            using (var context = new BankdbContext())
+                try
+                {
+                    var account = context.Account.FirstOrDefault(a => a.Iban == iban);
+                    return account;
+                }
+                catch (Exception ex)
+                {
+                    throw new NotImplementedException($"{ex.Message}\n{ex.InnerException.Message}");
+                }
+        }
 
         //Create new Account
         public void CreateAccount(Account account)
         {
-            _context.Account.Add(account);
-            _context.SaveChanges();
-        }
+            using (var context = new BankdbContext())
+                try
+                {
+                    context.Add(account);
 
-        //Delete an account
-        public void DeleteAccount(string iban)
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new NotImplementedException($"{ex.Message}\n{ex.InnerException.Message}");
+                }
+        }
+            //Delete an account
+            public void DeleteAccount(Account account)
         {
-            var delAccount = _context.Account.FirstOrDefault(a => a.Iban == iban);
-            if (delAccount != null)
-                _context.Account.Remove(delAccount);
-            _context.SaveChanges();
+            using (var context = new BankdbContext())
+                try
+                {
+                    context.Remove(account);
+
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new NotImplementedException($"{ex.Message}\n{ex.InnerException.Message}");
+                }
         }
 
 
         public void CreateTransaction(Transaction transaction)
         {
-            try
+            using (var context = new BankdbContext())
             {
-                
-                _context.Transaction.Add(transaction);
-                var account = GetAccountById(transaction.Iban);
-                account.Balance += transaction.Amount;
-                _context.Account.Update(account);
-                _context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+                try
+                {
+                   
+                    context.Add(transaction);
+
+                    
+                    var account = GetAccountByIban(transaction.Iban);
+                   
+                    account.Balance += transaction.Amount;
+                  
+                    context.Account.Update(account);
+                    
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new NotImplementedException($"{ex.Message}\n{ex.InnerException.Message}");
+                }
             }
         }
     }

@@ -32,7 +32,8 @@ namespace BankAppTask.Model
 
         public override string ToString()
         {
-            return $"{Amount},{TimeStamp}";
+            string plusMinus = Amount >= 0 ? "+" : "";
+            return $"{plusMinus}{Amount}\t{TimeStamp:dd.MM.yyyy}";
         }
     }
 }
