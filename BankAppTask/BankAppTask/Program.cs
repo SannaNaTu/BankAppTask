@@ -88,14 +88,14 @@ namespace BankAppTask
         }
         static void CreateAccount(string iban, long bankId, long customerId, decimal balance)
         {
-            //lissee tili
+            //lissee tili // Jotain häikkää
             Account account = new Account(iban, bankId, customerId, balance);
             AccountRepository accountRepository = new AccountRepository();
             accountRepository.CreateAccount(account);
         }
         static void DeleteAccount(string iban, long bankId, long customerId, decimal balance)
         {
-            //deletoi tili
+            //deletoi tili // Jotain häikkää
             Account account = new Account(iban, bankId, customerId, balance);
             AccountRepository accountRepository = new AccountRepository();
             accountRepository.DeleteAccount(account);
